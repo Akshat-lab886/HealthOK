@@ -49,7 +49,7 @@ class _SyncPageState extends State<SyncPage> {
 
   static final List<HealthDataType> _readTypes = [
     HealthDataType.STEPS,
-    HealthDataType.TOTAL_DISTANCE,
+    HealthDataType.DISTANCE_WALKING_RUNNING,
     HealthDataType.ACTIVE_ENERGY_BURNED,
   ];
 
@@ -58,14 +58,8 @@ class _SyncPageState extends State<SyncPage> {
       _phase = SyncPhase.requesting;
       _status = 'Requesting Health Connect access…';
     });
-    final granted = await _health.requestAuthorization(
-      _readTypes,
-      permissions: [
-        HealthPermission.READ,
-        HealthPermission.READ,
-        HealthPermission.READ,
-      ],
-    );
+    // health v13: authorization defaults to read access for the given types.
+    final granted = await _health.requestAuthorization(_readTypes);
     return granted;
   }
 

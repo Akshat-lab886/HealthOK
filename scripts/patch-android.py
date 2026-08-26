@@ -71,13 +71,17 @@ def patch_manifest() -> None:
         text = text.replace(m.group(1), PERMS + "\n" + m.group(1), 1)
         changed = True
 
-    if "<queries>" not in text:
-        text = text.replace("<application>", QUERIES + "\n    <application>", 1) \
-            if "<application>" in text else text
-        if "<queries>" not in text:  # application tag has attributes
-            m = re.search(r"(<application[^>]*>)", text)
-            assert m
-            text = text.replace(m.group(1), QUERIES + "\n    " + m.group(1), 1)
+    if "com.google.android.apps.healthdata" not in text:
+        m = re.search(r"(<queries[^>]*>)", text)
+        if m:  # merge into an existing queries block
+            hc = ('\n        <package android:name="com.google.android.apps.healthdata" />'
+                  '\n        <intent>\n            <action android:name='
+                  '"androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />\n        </intent>')
+            text = text.replace(m.group(1), m.group(1) + hc, 1)
+        else:
+            mm = re.search(r"(<application[^>]*>)", text)
+            assert mm
+            text = text.replace(mm.group(1), QUERIES + "\n    " + mm.group(1), 1)
         changed = True
 
     if "VIEW_PERMISSION_USAGE" not in text:
