@@ -1,0 +1,84 @@
+ OS - watchOS 27 - Apple Apple Store Mac iPad iPhone Watch Vision AirPods TV & Home Entertainment Accessories Support 0 + Overview iOS macOS iPadOS watchOS visionOS Apple Intelligence watchOS 27 Preview Introducing Siri AI.
+Truly helpful.
+Truly yours. watchOS 27 coming this fall.
+Siri AI coming in English later this year.
+Explore what’s new for watchOS 27. watchOS 27 coming this fall.
+Siri AI Siri app Dynamic app grid Tap gesture Workout Buddy Cycle tracking New Siri AI.
+An even more capable AI assistant with expanded intelligence to be more helpful every day. 1 Revisit your conversations with Siri all in one place with a dedicated Siri app.
+Get to your go-to apps faster with a new dynamic app grid.
+Open a Smart Stack widget with one hand using a new single tap gesture.
+Workout Buddy keeps you motivated with new insights from your fitness data. 2 Cycle Tracking in the Health app features perimenopause and menopause support. 3 Siri AI on Apple Watch Your AI assistant.
+More personal.
+More powerful.
+Siri AI is powered by Apple Intelligence and more helpful than ever. 1 Get more done every day with richer answers, natural conversations, and a new, dedicated app.
+Siri AI coming in English later this year.
+Just ask Siri AI.
+Powered by Apple Intelligence, Siri AI is your conversational AI assistant with entirely new capabilities on Apple Watch. 4 Ask open-ended questions, brainstorm ideas for workout routines and more, and engage in natural, back-and-forth conversations.
+Siri understands your personal context.
+Siri AI can find relevant answers to what you’re looking for just by asking.
+Search for your driver’s license number, easily find the door code for your upcoming house rental, or pull up the details from a note you saved.
+Take action in apps.
+Share your flight details with your family, play the song your trainer recommended, or set a new goal for your Activity rings — without having to look around for them.
+Tap into broad world knowledge.
+While you’re on the go, ask about virtually any topic that’s on your mind, from workout ideas to wellness tips or even the ferry schedule.
+Siri AI can reference information online to give you detailed, up-to-date insights.
+Introducing the Siri app.
+A dedicated app brings together all your conversations in one place, so you can ask a question on your iPhone and pick up where you left off on your Apple Watch.
+You can also pin conversations for easy access, or start a new one right from your wrist.
+New dynamic app grid.
+This automatically highlights Siri-suggested apps, including your most popular and recently used ones — with the Siri app always front and center.
+Health and fitness Say hola to even more motivation.
+Push your fitness further with new data insights, Workout Buddy available in Spanish, expanded menstrual health support, and better run tracking.
+New Workout Buddy insights.
+Workout Buddy delivers motivation based on your fitness history with new data insights, including your progress for pace, distance, and workout duration. 2 Workout Buddy without your iPhone nearby.
+Stay motivated during your workouts without anything in your pocket or hand.
+Even more accurate miles for indoor runs and walks.
+Improved motion tracking algorithms help measure the distance of your treadmill runs and walks more precisely right from your wrist.
+Workout Buddy in Spanish.
+Get help boosting your fitness with personalized motivation in a language that feels natural to you.
+Perimenopause and menopause support.
+Cycle Tracking in the Health app can provide notifications when your logged cycle patterns are suggestive of perimenopause.
+You can track related symptoms and find support with educational resources. 3 OS improvements Every little detail makes it all delightful.
+Discover deep refinements that make your Apple Watch more responsive and easy to use — from intuitive gestures and Smart Stack suggestions to bringing you relevant info during a call.
+New tap gesture.
+Tap your index finger and thumb together once to select a widget in the Smart Stack and quickly see what’s relevant to you — even if your other hand is occupied.
+New Smart Stack suggestions.
+More widgets appear in your Smart Stack when they’re relevant.
+Wish a close contact happy birthday, see the location of your parked car, change your sleep alarm before select holidays, or pin your transit card for quick balance checks.
+More intuitive Find My app.
+Find Devices, Find People, and Find Items are now streamlined into the Find My app.
+So everything you care about is easier to locate on a map-centric view.
+Design refinements.
+Updated Liquid Glass ensures exceptional readability with more uniform refraction and improved contrast.
+Get relevant information while on a call.
+Call Context can proactively surface relevant information from across your apps when calling a business — like a confirmation code from Mail when you call an airline.
+Coming in English General improvements.
+Music playback on Apple Watch now starts faster.
+The step count in the Fitness app syncs with steps counted in the Health app, and battery optimizations may be suggested. watchOS 27 features And so much more.
+Wallet app.
+Create custom passes for any membership or card that uses a QR code or barcode — like your library card — then easily access it in the Wallet app or pin it in the Smart Stack.
+Child Safety.
+A Child Account puts you in control with built-in protections.
+And with Apple Watch For Your Kids, you can set up an Apple Watch for your child 5 — even if they don’t yet have an iPhone — so they can stay connected, active, healthy, and safe. watchOS 27 is compatible with these devices. watchOS 27 requires iPhone 11 or later or iPhone SE (2nd generation or later) with iOS 27 and one of the following Apple Watch models: Explore Apple Watch Apple Watch SE 3 Apple Watch Series 9 Apple Watch Series 10 Apple Watch Series 11 Apple Watch Ultra 2 Apple Watch Ultra 3 Developers will love watchOS 27, too.
+Learn more about developing for watchOS Apple Footer Siri AI will be available In beta later this year and requires an Apple Intelligence–enabled device set to a supported language.
+Available in English to start.
+Siri AI will not initially be available in the EU on iOS, iPadOS and watchOS.
+Requires a paired Apple Intelligence–enabled iPhone and Bluetooth headphones with device and Siri language set to English or Spanish.
+Some features may not be available in all regions or languages.
+The Cycle Tracking app should not be used for birth control or to diagnose a health condition.
+Cycle deviation notifications are based solely on the user’s logged cycle history.
+Cycle deviation notifications inclusive of perimenopause are for ages 40 and above.
+These notifications are not intended to replace traditional methods of diagnosis, monitoring, or treatment of perimenopause or menopause.
+Apple Intelligence on iOS 27, iPadOS 27, macOS 27, watchOS 27, and visionOS 27 is available on all iPhone 16 models and later, iPhone 15 Pro, iPhone 15 Pro Max, iPad mini (A17 Pro), iPad models with M1 and later, MacBook Neo (A18 Pro), Mac models with M1 and later, Apple Vision Pro with M2 and later, Apple Watch Series 9 and later, Apple Watch Ultra 2 and later, and Apple Watch SE 3 when paired with an Apple Intelligence–enabled iPhone nearby, with Siri and device language set to Chinese (Simplified), Chinese (Traditional), Danish, Dutch, English, French, German, Italian, Japanese, Korean, Norwegian, Portuguese, Spanish, Swedish, Turkish, or Vietnamese.
+Some features may not be available in all regions or languages.
+Some devices may not be available in all regions.
+Not all features will be available if the Apple Watch is set up through Apple Watch For Your Kids.
+Check support.apple.com/109036 for details.
+Wireless service plan required for cellular service.
+Check apple.com/watch/cellular for participating wireless carriers and eligibility.
+Features are subject to change.
+Some features, applications, and services may not be available in all regions or all languages.  Apple Operating Systems watchOS 27 Shop and Learn Shop and Learn Store Mac iPad iPhone Watch Vision AirPods TV & Home AirTag Accessories Gift Cards Apple Wallet Apple Wallet Wallet Apple Card Apple Pay Apple Cash Account Account Manage Your Apple Account Apple Store Account iCloud.com Entertainment Entertainment Apple One Apple TV Apple Music Apple Arcade Apple Fitness+ Apple News+ Apple Podcasts Apple Books App Store Apple Store Apple Store Find a Store Genius Bar Today at Apple Group Reservations Apple Camp Apple Store App Certified Refurbished Apple Upgrade Apple Trade In Financing Carrier Deals at Apple Order Status Shopping Help For Business For Business Apple and Business Shop for Business For Education For Education Apple and Education Shop for K-12 Shop for College For Healthcare For Healthcare Apple and Healthcare For Government For Government Apple and Government Shop for Veterans and Military Shop for State and Local Employees Shop for Federal Employees Apple Values Apple Values Accessibility Education Environment Inclusion and Diversity Privacy Racial Equity and Justice Supply Chain Innovation About Apple About Apple Newsroom Apple Leadership Career Opportunities Investors Ethics & Compliance Events Contact Apple More ways to shop: Find an Apple Store or other retailer near you.
+Or call 1-800-MY-APPLE (1-800-692-7753).
+United States Copyright © 2026 Apple Inc.
+All rights reserved.
+Privacy Policy Terms of Use Sales and Refunds Legal Site Map United States 

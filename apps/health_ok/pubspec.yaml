@@ -1,0 +1,23 @@
+name: health_ok
+description: HealthOK — local-first health tracker with an on-device AI coach. M0 sync-spike shell.
+publish_to: 'none'
+version: 0.0.1+m0
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Platform health-store bridge (HealthKit iOS / Health Connect Android).
+  # Verified profile: carp.dk, MIT, v13.x line — see docs/06-health-platform-sync.md §4.
+  health: ^13.0.0
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,26 @@
+# Tooling (sandbox-contained)
+.tooling/
+*.zip
+
+# Flutter/Dart
+**/build/
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+*.iml
+
+# Android
+**/android/.gradle/
+**/local.properties
+**/key.properties
+**/.idea/
+
+# iOS (future)
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+
+# macOS noise
+.DS_Store

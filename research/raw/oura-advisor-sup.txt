@@ -1,0 +1,49 @@
+ Skip to main content Oura Member Care We're committed to guiding, supporting, and making sure you feel cared for.
+Oura Member Care Oura App App Features Insights & Reports Articles in this topic Oura Advisor Importing Electronic Health Records (EHR) Discovery Hub Oura Reports Using Trends Using Tags Oura on the Web Export & Share Your Oura Data Oura Experiments Oura Circles Oura Stickers Oura Labs Oura Advisor Last updated: June 11, 2026 Oura Advisor provides personalized advice to help you improve sleep, strengthen resilience, and optimize activity.
+Oura Advisor is available for: Gen3 or later with active membership iOS Android This feature is not available on Gen2 or older.
+Oura Ring is not a medical device and is not intended to diagnose, treat, cure, monitor, or prevent medical conditions or illnesses.
+Please do not make any changes to your medication, nutrition, or workouts without first consulting your doctor or another medical professional.
+How to Use Oura Advisor Troubleshooting Oura Advisor Privacy More Information How to Use Oura Advisor Oura Advisor combines health-sensing algorithms with a state-of-the-art large language model to analyze your data and biometrics and answer your questions.
+To begin using Oura Advisor, tap the + button in the bottom right corner of the "Today" tab and follow the in-app instructions.
+Once enabled, you can chat with Oura Advisor in your Oura App at any time.
+When chatting with Oura Advisor, you can open a new, blank conversation, or choose to continue a previous thread from your conversation history.
+Same-day threads will automatically continue if you open Advisor from the same entry point in the app—otherwise, you'll see a new, blank thread.
+You can delete a thread from your conversation history, but be aware that this action is permanent.
+Deleted threads cannot be recovered.
+Conversation history became available with Oura App version 7.17.0 in June 2026.
+Oura Advisor conversations before that time will not be saved in the conversation history.
+Oura Advisor relies on data from your Oura App to offer a personalized experience.
+This data includes: Scores and contributors Activities and tags Profile information Interactions with Advisor You can customize how Oura Advisor supports you: Style: Choose your preferred interaction style Check-in Notifications: Set how often and when you'd like to get them Memories: View or delete past information you've shared To update your Oura Advisor settings: In the Today tab, tap the + button on the bottom right Tap Advisor Tap Settings in the top-right corner Oura's Women's Health Model Advisor includes a custom women’s health model, developed with OB-GYNs and grounded in clinical research, to better support you through different phases of your women’s health journey.
+When interacting with Advisor, if your topic relates to women's health, including your cycle, hormonal health, pregnancy, or menopause, the response will automatically come from our custom model.
+This can help you interpret your Oura data in context, recognize patterns across different reproductive phases, explore lifestyle adjustments through a women's health lens, and feel more informed and confident before speaking with a trusted healthcare provider.
+All other questions continue to be answered by Advisor.
+Troubleshooting Oura Advisor Oura Advisor needs a stable internet connection to work properly.
+If you're receiving an error message: Force close the Oura App Switch between Wi-Fi and cellular data in your phone's settings Open the Oura App and try to chat with Oura Advisor again Sometimes discrepancies may appear between the data in Oura Advisor and what's displayed in other sections of the Oura App.
+Oura Advisor is designed to provide helpful insights, but it may occasionally generate unexpected responses.
+We’re continuously working to improve its accuracy.
+If Oura Advisor isn't working as expected, we recommend closing Oura Advisor, performing a complete data backup , and then reopening Oura Advisor.
+Oura Advisor is currently available in: Danish Dutch English Finnish French German Italian Norwegian Spanish Swedish Please note that some features, such as Meals , might not be integrated with Oura Advisor in languages other than English.
+Oura Advisor also isn't fully integrated with all the features available in the Oura App at this time.
+We’re hoping to integrate additional Oura App features soon.
+Privacy We understand that few things are more personal than your health data.
+We strive to offer you the transparency and control to manage your data effectively.
+Data is processed and stored in Oura's cloud, it is never sold to third parties.
+Our custom women's health model is fine-tuned and deployed by Oura within our secure cloud environment.
+Information you share with Advisor is stored as memories, helping personalize the interactions that you have with Advisor.
+You can delete your data at any time.
+You can view and delete memories via Advisor's Settings.
+You can also reset Oura Advisor, which will erase all accumulated data, memories, and settings within the feature.
+To reset Oura Advisor: In the Today tab, tap the + Menu Tap Advisor Tap Settings in the top-right corner Tap Reset Advisor After resetting, you'll need to go through setup to use Advisor again.
+Oura Advisor is optional to use for all members.
+The feature is always available on the Oura App, but it won't collect any of your metrics or data if you haven't gone through the setup process.
+For more information on how we protect your data, read our Health Privacy Policy and How Oura Protects Your Data .
+More Information Introducing Oura Advisor: Your AI-Powered Personal Health Companion Advisor in Action: How to Use Oura Advisor Still need help?
+Chat Support Available to chat 24/7 Phone Support Available by appointment Oura Schedule a Phone Call First Name Last Name Email Address Reason for Call Note: Some requests may need further investigation and can't be fully resolved over the phone.
+Continue Scheduled Call Canceled Your call has been canceled, Click OK to close this window, or Reschedule to book another call.
+OK Reschedule Receive articles, tips, and offers from Oura We care about protecting your data.
+Read more in our Privacy Policy .
+We care about protecting your data.
+Read more in our Privacy Policy .
+Terms & Conditions Privacy Policy Accessibility IP Notice Security Center © 2026 Oura Health Oy.
+All rights reserved. ŌURA, OURA, and Ō are trademarks of Oura Health Oy and may not be used without permission.
+English Oura Advisor | Oura Member Care 

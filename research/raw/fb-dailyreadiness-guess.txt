@@ -1,0 +1,128 @@
+ What's the Sleep Score in the Google Health app - Google Health Help Center Skip to main content Google Health Help Center Sign in Google Help Help Center Getting started Setup Notifications Fitness Sleep and wellness Settings Lifestyle Music Payments Accounts Updates Policies User manuals Community Google Health Privacy Policy Terms of Service Submit feedback Send feedback on...
+This help content & information General Help Center experience Next Help Center Community Google Health Getting started Setup Notifications Fitness Sleep and wellness Settings Lifestyle Music Payments Accounts Updates Policies User manuals Notification For assistance with Fitbit Ace LTE, go to support.google.com/fitbitacelte .
+What's the Sleep Score in the Google Health app Check your daily Sleep Score for insight into how you slept.
+To review additional insights into your sleep data, including opportunities to chat with the sleep coach about your data, purchase a Google Health Premium subscription.
+For more information, refer to What should I know about Google Health Premium?
+Expand all Collapse all Learn about your Google Health sleep score The Sleep Score is meant to capture, in a single number, how well you slept overall.
+Your Sleep Score can help you understand your sleep so you can monitor trends in your sleep patterns.
+Studies show getting enough high-quality sleep can positively affect your energy, activity, mood, weight, and more ( source ).
+To help you understand your overall sleep quality, Google Health combines different metrics into a Sleep Score.
+Your Sleep Score is based on the contribution of several metrics that attempt to capture the process of falling asleep, the continuity of sleep, and whether you achieved an adequate amount and quality of sleep to feel rested.
+Note: Your device needs to track sleep stages to determine your sleep score.
+For more information, refer to What should I know about Google Health sleep stages?
+Check your sleep score Google Health App Wear your Fitbit device to bed, and sync it when you wake up.
+Open the Google Health app , and tap the Sleep tab .
+Tap Sleep duration Score .
+To review stats for previous days: Tap the arrows next to the calendar to change the time period.
+Tap the week, month, or year tabs at the top to find and select past sleep sessions.
+Tap the “Sleep duration” or “Sleep quality” chips to see the specific metrics that make up your score.
+On-Device On certain devices, you can check your sleep score from your wrist.
+Wear your device to bed, and sync it when you wake up.
+Check your sleep tile to find your Sleep Score.
+Fitbit Sense 2 and Fitbit Versa 4: Swipe left or right from the clock face to find the Sleep tile.
+Your sleep score is displayed under the sleep duration.
+Google Pixel Watch series: Press the crown, swipe up to the Google Health app .
+Tap the app to open it.
+Swipe up to the Sleep card.
+Your score is displayed under the sleep session.
+For instructions, refer to Change the watch face, background, and other settings on Pixel Watch .
+Other Fitbit devices: Swipe up from the clock face to see your daily stats, including your most recent sleep session.
+How your Sleep Score is calculated To help you focus on getting better sleep, we’ve updated the score to be more transparent.
+By focusing on specific aspects that impact how most people reported they felt about their sleep, we’ve redefined how the Sleep Score operates.
+With this information, you can consider making lifestyle changes to improve your sleep.
+The following metrics contribute to your Sleep Score: Sleep duration Definition This is how much time you were estimated to be asleep during your primary sleep window for the day.
+We consider any time that you were likely asleep to be part of your sleep duration.
+Understanding your number Generally sleeping as much as your body is able is an indication that you’re satisfying your body’s needs.
+In terms of your Sleep Score, the longer you sleep, the higher your score.
+Time to sound sleep Definition This measures the settling-down phase of your sleep period.
+It tracks the time from when you first try to fall asleep until you reach sound sleep.
+This is the moment your body first settles into deep, REM, or a steady phase of light sleep with a calm heart rate.
+Understanding your number A faster time to fall asleep and then transition into a more stable or deep sleep state will generally improve your Sleep Score.
+The expected time it takes to fall soundly asleep will differ depending upon your age and gender Sound sleep Definition How your sleep looked, reflecting the total amount of steady, undisturbed sleep you got.
+We add up all the moments during your sleep period where your body appears to be soundly asleep (Deep/REM/Light with low, steady HR).
+Understanding your number Optimal recovery requires a balance of all sleep stages, including sound sleep and transitions between states.
+Spending more of your total sleep time soundly asleep will result in a higher Sleep Score.
+Restlessness Definition Reflecting the time you would likely feel that you were asleep, but moving, stirring, or in a transitional/wake-like state.
+We add up all the very brief, minor wakeful moments that happen while you are asleep.
+We exclude longer, memorable awakenings.
+Understanding your number The lower the amount of sleep that appears restless, the higher your Sleep Score will be.
+The expected amount of restless sleep will depend upon your age, gender, and how much sleep you actually got.
+Full awakenings Definition An estimate of the distinct sleep interruptions that are long enough to significantly disrupt your sleep and likely be remembered the next day.
+Based on scientific studies, we only count periods of wakefulness that last longer than five minutes.
+We do not include the time you spent trying to fall asleep or lingering in bed after you’re done sleeping.
+Understanding your number A higher Sleep Score is achieved through fewer interruptions that break your natural sleep cycles.
+Zero is ideal, but fewer than two is considered good for most people.
+Interruptions Definition This is the total time you appeared fully awake between first falling asleep and finally awakening.
+We look for longer, likely memorable and more disruptive moments of wakefulness rather than tiny, natural stirs.
+We measure the total time you spent in longer, more significant stretches of wakefulness.
+We only include: Wakeful periods that last longer than five minutes, because studies suggest this is how long they must last for most people to be able to remember being awake.
+The awake time between two separate sleep sessions (if your intended sleep period was broken into multiple parts).
+Understanding your number A higher Sleep Score will generally have less interruption.
+A low amount of awake time indicates your brain and body had a more continuous sleep.
+How your Sleep Score is calculated Your Sleep Score is a personalized reflection of your sleep period.
+Our algorithm compares your sleep data against targets tailored to your age, gender, and total time you were sleeping or attempting to sleep.
+These targets are based on thousands of real-world sleep studies and user reports.
+Most users see an average Sleep Score between 72 and 83.
+To help you understand your results, we categorize scores based on how users typically rate their sleep quality: Description Score range Excellent 90-100 Good 80-89 Fair 60-79 Poor Less than 60 Track your sleep Wrist-based Fitbit devices and the Google Pixel Watch series automatically detect your sleep when you wear your device to bed.
+Make sure your device’s battery has enough charge remaining to last for the entire time you are intending to sleep.
+Improve your sleep score While there is no single rule that applies to everyone, here are some principles to help you get a good sleep.
+Set aside adequate opportunity to get the sleep you need.
+Stick to a regular sleep-wake schedule (even on days off), whenever possible.
+Focus on sleep-healthy habits while awake: Be physically active throughout the day Limit alcohol, caffeine, and nicotine Create bedtime routines and a sleep space that help you wind down and get undisturbed rest.
+If you’re struggling to achieve sleep goals, consider talking to a sleep expert.
+While a higher Sleep Score is generally better, improvement is personal.
+Instead of comparing yourself to the global average, focus on reaching the higher end of your own healthy range.
+By consistently practicing good sleep habits, you can reach and maintain sleeping at "your personal best." For more tips, visit How can I use my Fitbit device to sleep better?
+Edit your sleep log in the Google Health app If your sleep start or end times are incorrect, you can manually edit your sleep log to better reflect your sleep period, which may result in a recalculation of your Sleep Score.
+Note that if you extend your time asleep, you may find gaps at the start or end of your sleep stages, and we may generate a new Sleep Score which may not be fully accurate or might not be able to generate a Sleep Score from the edited data.
+Some of the data won’t be considered in coach analyses.
+For more information on editing your sleep log, refer to How do I add, edit, or delete Fitbit data and activities?
+Missing a sleep score?
+To get a Sleep Score, you need to receive sleep stages.
+If you didn’t get sleep stages, refer to Learn about Google Health sleep stages Tip: When syncing your device, it may take a minute for your Sleep Score to appear.
+Control your sleep score You can’t turn off your Sleep Score at this time.
+Download your sleep data You can download your sleep data at any time.
+Note that you’ll receive raw data without further analysis.
+For instructions on how to download your data, refer to How do I export my Google Health data?
+Understanding your new Sleep Score Why is my Sleep Score suddenly lower than it used to be?
+The new Sleep Score algorithm is using our recently updated sleep tracking algorithms to provide a different perspective on how you slept.
+The changes to our sleep algorithms that impact the Sleep Score include: A more accurate estimate of when you appear to be attempting to sleep State-of-the-art sleep stage accuracy The ability to differentiate between longer, more interruptive periods of wake and shorter, less disruptive transitions Note that as you transition from the legacy Sleep Score to the new algorithms, you may see your new Sleep Score drop several points.
+Your sleep hasn't suddenly gotten worse.
+It’s just using more accurate sleep data to characterize your sleep in a holistic way.
+What is considered a "good" score with this new system?
+The benchmarks for a good Sleep Score have not shifted.
+Under the new system, hitting 80+ still represents that you took advantage of your sleep period to help you feel like you slept reasonably well.
+Focus on your own personal trends over time rather than chasing a perfect 100.
+I feel completely rested, but my score is low.
+Should I be worried?
+Always trust your body first.
+The algorithm measures physiological markers, like movement and heart function.
+But your subjective feeling of rest matters just as much.
+If you wake up feeling energised, don't let a lower score induce anxiety.
+Instead, use the sub-metrics to spot minor environmental factors like room temperature or a late meal that might point out areas that can be tweaked to help you consistently achieve your “personal best” Sleep Scores.
+Can I switch back to the old Sleep Score?
+No.
+This update makes sure all your future Google Health metrics and coach insights are built on our most accurate, scientifically validated foundation.
+Based on user feedback and our research, this new score aligns more closely with how people actually feel about their sleep quality.
+How does the app tell the difference between "awake" and "restlessness"?
+Research shows that not all wakefulness is the same.
+To help you focus on what actually impacts your recovery, we use a 5-minute threshold based on the scientific literature: Awake: Interruptions lasting longer than 5 minutes .
+These are the significant awakenings you are more likely to remember and find disruptive.
+Restlessness: Brief, often normal transitions under 5 minutes .
+You might not even remember these, so we categorize them as "restlessness" to account for the brief transition from more stable sleep.
+Does the new algorithm delete my historical sleep data?
+You may notice a change in your recent historical sleep data trends including your Sleep Score and sleep stages.
+Our new improved algorithms provide more actionable metrics and will ensure your recent long term trends reflect the new baseline.
+What is the difference between Deep sleep and Sound sleep?
+Deep sleep is the estimate of N3 sleep — also known as slow-wave sleep.
+Sound sleep takes into account your Light, Deep, and REM sleep stages.
+By looking at your heart rate, we can see when you are in a stable sleep state.
+Put simply: if we woke you up during sound sleep, you'd likely know you'd been asleep.
+Tracking your sound sleep helps us see exactly how you drift off, rather than just pinpointing the exact minute you drifted off.
+It also helps your Sleep Score better match how rested you actually feel after awakening.
+That’s because every single sleep stage — even Light sleep — plays an important role in helping your body recharge.
+Related resources How do I track my sleep with my Fitbit device Learn about Google Health sleep stages Was this helpful?
+How can we improve it?
+Yes No Submit Need more help?
+Try these next steps: Post to the help community Get answers from community members Contact us Tell us more and we’ll help you get there true Related articles 1 of 22 What is Morning Brief 2 of 22 Track sleep with Google Health 3 of 22 Learn about Google Health sleep stages 4 of 22 What's the Sleep Score in the Google Health app 5 of 22 Understanding your readiness score in the Google Health app 6 of 22 How do I track breathing rate in the Google Health app? 7 of 22 How do I track blood oxygen saturation (SpO2) with my Fitbit device? 8 of 22 Track your vitals in the Google Health app 9 of 22 Log your glucose in the Google Health app 10 of 22 Manage stress & mindfulness in Google Health 11 of 22 Use the Google Health app to track your period 12 of 22 Track your Cycle health with Google Health 13 of 22 Track your nutrition and hydration with the Google Health app 14 of 22 What is the Google ECG app? 15 of 22 How do Google Irregular Rhythm Notifications check for atrial fibrillation (AFib)? 16 of 22 How can Google Health help me track my temperature? 17 of 22 How do I take my temperature with my Pixel phone? 18 of 22 What is Loss of Pulse Detection on my Google Pixel Watch? 19 of 22 What is Breathing Emergency Detection on my Google Pixel Watch? 20 of 22 Sync your medical records with the Google Health app 21 of 22 Manage & delete your medical records data in the Google Health app 22 of 22 How accurate are Fitbit devices? ©2026 Google Privacy Policy Terms of Service Language dansk‎ Deutsch‎ eesti‎ English (Australia)‎ English (United Kingdom)‎ español‎ español (Latinoamérica)‎ français‎ français (Canada)‎ hrvatski‎ Indonesia‎ italiano‎ latviešu‎ lietuvių‎ magyar‎ Malti‎ Nederlands‎ norsk‎ polski‎ português‎ português (Brasil)‎ română‎ slovenčina‎ slovenščina‎ suomi‎ svenska‎ Türkçe‎ íslenska‎ čeština‎ Ελληνικά‎ български‎ русский‎ ‏ עברית ‏ العربية 中文（简体）‎ 中文（繁體）‎ 日本語‎ 한국어‎ English‎ Enable Dark Mode Send feedback on...
+This help content & information General Help Center experience Search Clear search Close search Google apps Main menu 6851704002510264844 true Search Help Center false true true true true true 5306962 false false false false false 
