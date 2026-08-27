@@ -91,6 +91,11 @@ Google documents fixed request-rate quotas and explicitly instructs: *"utilize c
 3. **Workout type dictionary:** internal enum ← HK workout activity + HC exercise type; unmapped → `other` preserving raw string.
 4. **Units:** normalize to SI at ingestion boundary (ms, meters, ml, kcal, bpm); display layer converts per user units setting.
 
+### 5.1 M0 finding — `health` plugin enum mapping on Android 16 in-framework HC [U high, M1 work]
+During the M0 spike on a Galaxy Tab A9 (Android 16), the `health` v13.3.2 plugin's `requestAuthorization` returned `granted=false` when we requested `STEPS, DISTANCE_WALKING_RUNNING, ACTIVE_ENERGY_BURNED`, **even though the HC controller's per-app permission screen showed all three as "On"**. Narrowing the request to just `STEPS` returned `granted=true` immediately and `getTotalStepsInInterval` succeeded. The plugin's Dart enum names `DISTANCE_WALKING_RUNNING` / `ACTIVE_ENERGY_BURNED` do not map to the record types the in-framework HC controller stores under those toggles.
+
+**M1 fix:** at the `sync` adapter layer, expose a stable internal enum and map it to the **per-record-type permission strings** the controller shows (e.g. `DistanceRecord` ↔ `HealthDataType.DISTANCE_DELTA`? — verify against `pub-cache/.../health/lib/src/health_value_types.dart` before pinning). Verify by running the same `hasPermissions` probe for each candidate enum against the controller's per-app screen.
+
 ## 6. Write-back & Dedup Contract (FR-A2/A3)
 
 - **We write only self-authored data:** workouts recorded in-app, water, meals. Tagged: HC `Metadata.clientRecordId` + `clientRecordVersion` for idempotent upserts; HealthKit custom reverse-DNS metadata key (`com.healthok.origin`) + pre-insert lookup [U high patterns, standard practice].
