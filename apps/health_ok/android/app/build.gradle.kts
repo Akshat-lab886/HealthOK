@@ -7,10 +7,22 @@ plugins {
 android {
     namespace = "com.healthok.health_ok"
     compileSdk = flutter.compileSdkVersion
-    // Flutter's Gradle plugin pins an ndkVersion even for pure-Java apps, which
-    // makes AGP auto-install the NDK into the (read-only) system SDK. Point it
-    // at a workspace-local stub instead — M0 has no native code to build.
-    ndkPath = "/Users/akshatpratap/HealthOK/.tooling/fake-ndk"
+    // Flutter's Gradle plugin pins an ndkVersion; instead of letting AGP
+    // auto-install into the read-only system SDK, we vendor the exact NDK
+    // (r28c = 28.2.13676358) inside the workspace and point ndkPath at it.
+    ndkPath = "/Users/akshatpratap/HealthOK/.tooling/android-ndk-r28c"
+
+    signingConfigs {
+        getByName("debug") {
+            // macOS JVM ignores $HOME for user.home, so AGP cannot create the
+            // default ~/.android/debug.keystore under the sandbox. Use a
+            // workspace-local debug keystore instead (generated via keytool).
+            storeFile = file("/Users/akshatpratap/HealthOK/.tooling/android-debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
