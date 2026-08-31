@@ -1,0 +1,10 @@
+# Tell GitHub Linguist: research dumps are not project code
+research/raw/** linguist-vendored=true
+research/raw/**/*.html linguist-vendored=true
+**/build/** linguist-vendored=true
+.tooling/** linguist-vendored=true
+.dart_tool/** linguist-vendored=true
+
+# Keep these counted
+apps/health_ok/lib/**/*.dart linguist-language=Dart
+packages/**/*.dart linguist-language=Dart
