@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_ok/main.dart' show AppColors;
+import 'package:health_ok/src/services/body_service.dart';
+import 'package:health_ok/src/services/daily_stats_service.dart';
 import 'package:health_ok/src/services/hydration_service.dart';
 
 class HydrationScreen extends StatefulWidget {
@@ -61,7 +63,19 @@ class _HydrationScreenState extends State<HydrationScreen> {
   }
 
   Future<void> _editGoal() async {
-    final smart = HydrationService.suggestGoalMl();
+    // Smart suggestion uses the user's REAL weight + today's activity,
+    // not the 70 kg default.
+    int smart = 2000;
+    try {
+      final weight = await BodyService.effectiveWeightKg();
+      final stats = await DailyStatsService.getToday();
+      smart = HydrationService.suggestGoalMl(
+        weightKg: weight,
+        stepsToday: stats?.steps ?? 0,
+      );
+    } catch (_) {
+      smart = HydrationService.suggestGoalMl();
+    }
     final ctrl = TextEditingController(text: _goalMl.toString());
     final result = await showDialog<int>(
       context: context,

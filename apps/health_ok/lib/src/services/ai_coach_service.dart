@@ -7,6 +7,9 @@ import 'model_manager.dart';
 import 'colibri_engine.dart';
 import 'gemini_service.dart';
 import 'app_settings.dart';
+import 'mood_service.dart';
+import 'body_service.dart';
+import 'daily_stats_service.dart';
 
 /// Health coach system prompt — expert, motivating, concise.
 const _systemPrompt = '''You are HealthOK AI, an on-device health coach running locally on the user's phone. You are an expert in:
@@ -201,22 +204,35 @@ class AiCoachService extends ChangeNotifier {
         ? 'You are a health coach. Answer briefly about steps, sleep, exercise, nutrition. Use health data provided.'
         : _systemPrompt;
 
-    // Build enriched message with health data
+    // Build enriched message with health data + personal context
     String enrichedMessage = userMessage;
+    final ctxParts = <String>[];
     if (healthData != null && healthData.isNotEmpty) {
-      final parts = <String>[];
       if ((healthData['steps'] ?? 0) > 0) {
-        parts.add('${healthData['steps']!.toInt()} steps');
+        ctxParts.add('${healthData['steps']!.toInt()} steps today');
       }
       if ((healthData['distance'] ?? 0) > 0) {
-        parts.add('${healthData['distance']!.toStringAsFixed(1)}km');
+        ctxParts.add('${healthData['distance']!.toStringAsFixed(1)}km today');
       }
       if ((healthData['activeEnergy'] ?? 0) > 0) {
-        parts.add('${healthData['activeEnergy']!.toInt()}kcal');
+        ctxParts.add('${healthData['activeEnergy']!.toInt()} kcal active today');
       }
-      if (parts.isNotEmpty) {
-        enrichedMessage += ' [data: ${parts.join(', ')}]';
+    }
+    // Personal context: mood check-in, weight, level, streak
+    try {
+      final mood = await MoodService.getToday();
+      if (mood != null) {
+        ctxParts.add('mood ${mood.mood}/5, energy ${mood.energy}/5');
       }
+      final weight = await BodyService.effectiveWeightKg();
+      ctxParts.add('weight ${weight.toStringAsFixed(0)}kg');
+      final avgSteps = await DailyStatsService.avgSteps();
+      if (avgSteps != null) {
+        ctxParts.add('7-day avg ${avgSteps.toInt()} steps');
+      }
+    } catch (_) {}
+    if (ctxParts.isNotEmpty) {
+      enrichedMessage += ' [data: ${ctxParts.join(', ')}]';
     }
 
     // For micro tier: only keep last 2 messages to save context
@@ -318,10 +334,16 @@ class AiCoachService extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 100));
 
     final personality = AppSettings.getCoachPersonality();
+    // Personalize: today's mood check-in shapes the coach's tone.
+    int? lastMood;
+    try {
+      lastMood = (await MoodService.getToday())?.mood;
+    } catch (_) {}
     final response = ColibriEngine.instance.respond(
       userMessage,
       healthData: healthData,
       personality: personality,
+      lastMood: lastMood,
     );
 
     // Simulate streaming for consistent UI

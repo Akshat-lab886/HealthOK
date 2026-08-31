@@ -68,29 +68,51 @@ enum WorkoutType {
 
   const WorkoutType(this.emoji, this.label, this.hint);
 
-  /// Estimated kcal/min at intensity 3 (medium).
-  int get kcalPerMinute {
+  /// Compendium of Physical Activities MET value (moderate effort).
+  /// kcal/min = MET × 3.5 × weightKg / 200 — scales with the user's body.
+  double get met {
     switch (this) {
       case WorkoutType.run:
-        return 12;
+        return 9.8;
       case WorkoutType.walk:
-        return 5;
+        return 3.5;
       case WorkoutType.bike:
-        return 9;
+        return 7.5;
       case WorkoutType.swim:
-        return 11;
+        return 8.3;
       case WorkoutType.weights:
-        return 7;
+        return 5.0;
       case WorkoutType.yoga:
-        return 4;
+        return 2.8;
       case WorkoutType.hiit:
-        return 14;
+        return 10.0;
       case WorkoutType.sports:
-        return 8;
+        return 6.0;
       case WorkoutType.other:
-        return 7;
+        return 4.0;
     }
   }
+
+  /// Estimated kcal/min at [intensity] (1–5) for a given body weight.
+  /// Kept for the UI hint text; prefer [estimateCalories] for logging.
+  double kcalPerMinuteFor(double weightKg, int intensity) {
+    final intensityFactor = 0.85 + 0.075 * intensity.clamp(1, 5); // 0.925–1.225
+    return met * 3.5 * weightKg / 200 * intensityFactor;
+  }
+}
+
+/// MET-based calorie estimation using the user's real body weight.
+/// Replaces the old fixed kcal/min table (a 55 kg walker and a 95 kg walker
+/// burn very different amounts).
+int estimateWorkoutCalories({
+  required WorkoutType type,
+  required int durationMinutes,
+  required int intensity,
+  required double weightKg,
+}) {
+  final intensityFactor = 0.85 + 0.075 * intensity.clamp(1, 5); // 0.925–1.225
+  final perMinute = type.met * 3.5 * weightKg / 200 * intensityFactor;
+  return ((perMinute * durationMinutes).round()).clamp(1, 100000).toInt();
 }
 
 /// Persistent workout log.

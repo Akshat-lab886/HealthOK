@@ -65,13 +65,6 @@ class _AiQuestSuggestionSheetState extends State<AiQuestSuggestionSheet> {
     }
   }
 
-  List<String> _parseSuggestions(String text) {
-    final lines = text.split('\n').where((l) => l.trim().isNotEmpty).toList();
-    return lines
-        .map((l) => l.replaceFirst(RegExp(r'^\d+[\.\)]\s*'), '').trim())
-        .where((l) => l.isNotEmpty)
-        .toList();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -18,6 +18,7 @@ class ColibriEngine {
     String userMessage, {
     Map<String, double>? healthData,
     String personality = 'motivational',
+    int? lastMood, // 1-5 from the mood tracker; drives empathetic tone
   }) {
     _turnCount++;
     final msg = userMessage.toLowerCase().trim();
@@ -25,6 +26,11 @@ class ColibriEngine {
     final steps = data['steps']?.toInt() ?? 0;
     final dist = data['distance'] ?? 0.0;
     final cal = data['activeEnergy']?.toInt() ?? 0;
+    // Low mood from recent check-ins softens every response — the coach
+    // adapts to how the hunter FEELS, not just what they did.
+    final mood = lastMood;
+    final lowMood = mood != null && mood <= 2;
+    final highMood = mood != null && mood >= 4;
 
     // Detect topic
     final topic = _detectTopic(msg);
@@ -90,6 +96,23 @@ class ColibriEngine {
         } else {
           response = _buildGenericResponse(msg, isFollowUp, personality);
         }
+    }
+
+    // Mood adaptation: prepend empathy when the hunter is struggling,
+    // acknowledge energy when they're thriving. Works across ALL topics.
+    if (lowMood) {
+      final prefix = [
+        "I noticed today's mood check-in was low. Rest counts as training too.",
+        "Hard day, hunter? Recovery is part of the grind — no shame in an easier pace.",
+        "Low energy detected. Let's aim for small wins today, not records.",
+      ][_turnCount % 3];
+      response = '$prefix\n\n$response';
+    } else if (highMood) {
+      final prefix = [
+        "Strong mood today — good time to push a little harder.",
+        "Your energy is up. Capitalize on it while it lasts.",
+      ][_turnCount % 2];
+      response = '$prefix\n\n$response';
     }
 
     // Avoid exact repetition

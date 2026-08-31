@@ -28,6 +28,8 @@ import 'package:health_ok/src/services/notification_service.dart';
 import 'package:health_ok/src/services/achievement_service.dart';
 import 'package:health_ok/src/services/app_settings.dart';
 import 'package:health_ok/src/services/briefing_service.dart';
+import 'package:health_ok/src/services/daily_stats_service.dart';
+import 'package:health_ok/src/services/body_service.dart';
 import 'package:health_ok/src/services/settings_notifier.dart';
 import 'package:health_ok/src/theme/app_colors.dart';
 import 'package:health_ok/src/pages/onboarding_screen.dart';
@@ -295,7 +297,10 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
         hcWeekEnergy = energyWeek.fold<double>(0.0, (s, p) => s + (p.value as double? ?? 0.0));
       } catch (_) {}
 
-      // Also fetch from local DB to merge
+      // Also fetch from local DB to merge.
+      // Samples already mirrored into Health Connect (pushedToHc) are skipped
+      // here — Health Connect already contains them, and adding both would
+      // double-count every manual log.
       int localSteps = 0;
       double localDist = 0;
       double localEnergy = 0;
@@ -303,6 +308,7 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
         final db = await AppDatabase.open();
         final todayLocal = await db.getTodayLocalSamples();
         for (final s in todayLocal) {
+          if (s.metadata?['pushedToHc'] == true) continue;
           final val = s.value ?? 0;
           if (s.type == HealthDataType.steps) localSteps += val.toInt();
           if (s.type == HealthDataType.distance) localDist += val;
@@ -312,10 +318,26 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
 
       final totalTodaySteps = hcTodaySteps + localSteps;
       final totalWeekSteps = hcWeekSteps + localSteps;
-      final totalTodayDist = hcTodayDist + localDist;
-      final totalWeekDist = hcWeekDist + localDist;
       final totalTodayEnergy = hcTodayEnergy + localEnergy;
       final totalWeekEnergy = hcWeekEnergy + localEnergy;
+
+      // Distance accuracy: Health Connect on some wearables reports 0 for
+      // DISTANCE_DELTA even when steps exist. Estimate from the user's
+      // height-derived stride (0.415 × height) instead of showing 0 km.
+      double totalTodayDist = hcTodayDist + localDist;
+      if (totalTodayDist < 0.01 && totalTodaySteps > 0) {
+        try {
+          final strideM = (await BodyService.getProfile()).strideLengthM();
+          totalTodayDist = totalTodaySteps * strideM / 1000.0;
+        } catch (_) {}
+      }
+      double totalWeekDist = hcWeekDist + localDist;
+      if (totalWeekDist < 0.01 && totalWeekSteps > 0) {
+        try {
+          final strideM = (await BodyService.getProfile()).strideLengthM();
+          totalWeekDist = totalWeekSteps * strideM / 1000.0;
+        } catch (_) {}
+      }
 
       if (!mounted) return;
       setState(() {
@@ -329,6 +351,14 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
         _status = 'Synced';
         _errorDetail = null;
       });
+
+      // Persist today's totals into the rolling 30-day history — this is
+      // what powers personalized quest targets, weekly averages and trends.
+      unawaited(DailyStatsService.recordToday(
+        steps: totalTodaySteps,
+        distanceKm: totalTodayDist,
+        activeKcal: totalTodayEnergy.toInt(),
+      ));
 
       // Auto-complete quest objectives from health data
       try {
@@ -537,6 +567,8 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
 
   /// Write a single sample to Health Connect.
   /// Best-effort: silently no-ops on error so the local flow is not blocked.
+  /// On success the sample is tagged `pushedToHc` so the sync merge does not
+  /// double-count it (the same data now exists in Health Connect).
   Future<void> _writeToHealthConnect(Sample sample) async {
     try {
       final hcType = _toHealthConnectType(sample.type);
@@ -551,6 +583,22 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
         startTime: start,
         endTime: end,
       );
+      if (success) {
+        try {
+          final db = await AppDatabase.open();
+          await db.insertSample(Sample(
+            id: sample.id,
+            type: sample.type,
+            startAt: sample.startAt,
+            endAt: sample.endAt,
+            value: sample.value,
+            metadata: {...?sample.metadata, 'pushedToHc': true},
+            source: sample.source,
+            externalId: sample.externalId,
+            createdAt: sample.createdAt,
+          ));
+        } catch (_) {}
+      }
     } catch (e) {
     }
   }
@@ -570,13 +618,15 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
 
   /// Bulk-write today's local samples to Health Connect.
   /// Used by the user-tapped "Push to Health Connect" feature.
-  /// Returns the number of samples written.
+  /// Returns the number of samples written. Successful writes are tagged
+  /// `pushedToHc` so future sync merges skip them (no double-counting).
   Future<int> _pushTodayToHealthConnect() async {
     try {
       final db = await AppDatabase.open();
       final localSamples = await db.getTodayLocalSamples();
       int written = 0;
       for (final s in localSamples) {
+        if (s.metadata?['pushedToHc'] == true) continue;
         final hcType = _toHealthConnectType(s.type);
         if (hcType == null) continue;
         final v = s.value;
@@ -587,7 +637,22 @@ class SyncPageState extends State<SyncPage> with SingleTickerProviderStateMixin 
           startTime: s.startAt,
           endTime: s.endAt,
         );
-        if (success) written++;
+        if (success) {
+          written++;
+          try {
+            await db.insertSample(Sample(
+              id: s.id,
+              type: s.type,
+              startAt: s.startAt,
+              endAt: s.endAt,
+              value: s.value,
+              metadata: {...?s.metadata, 'pushedToHc': true},
+              source: s.source,
+              externalId: s.externalId,
+              createdAt: s.createdAt,
+            ));
+          } catch (_) {}
+        }
       }
       return written;
     } catch (e) {

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:quest_engine/quest_engine.dart';
 import 'hydration_service.dart';
+import 'daily_stats_service.dart';
 
 /// Persists player state, daily quests, and completed objectives.
 /// Handles auto-completion of health-data objectives.
@@ -101,12 +102,24 @@ class QuestService {
 
     // Generate new quest when none stored OR the stored one expired
     // (expiresAt is midnight of the day it was generated for).
+    // Targets are PERSONALIZED: they bend toward the user's real 7-day
+    // averages and their recent quest-completion rate.
     final engine = const QuestEngine();
     final now = DateTime.now();
     final needsNew = quest == null || !quest.expiresAt.isAfter(now);
     if (needsNew) {
       final hydrationGoal = await HydrationService.getGoalMl();
-      quest = engine.generateDaily(player, now: now, hydrationGoalMl: hydrationGoal);
+      final avgSteps = await DailyStatsService.avgSteps();
+      final avgKcal = await DailyStatsService.avgActiveKcal();
+      final completionRate = await DailyStatsService.questCompletionRate();
+      quest = engine.generateDaily(
+        player,
+        now: now,
+        hydrationGoalMl: hydrationGoal,
+        recentAvgSteps: avgSteps,
+        recentAvgKcal: avgKcal,
+        questCompletionRate: completionRate,
+      );
       await saveQuest(quest);
       completed = {};
       await saveCompleted({});
@@ -115,7 +128,9 @@ class QuestService {
     return QuestState(player: player, quest: quest, completed: completed);
   }
 
-  /// Save everything after auto-completion.
+  /// Save everything after auto-completion. Also records today's completion
+  /// fraction so tomorrow's quest difficulty can adapt to the user's
+  /// actual success rate (personalized difficulty).
   static Future<void> saveAll({
     required Player player,
     required QuestSet quest,
@@ -124,6 +139,10 @@ class QuestService {
     await savePlayer(player);
     await saveQuest(quest);
     await saveCompleted(completed);
+    if (quest.objectives.isNotEmpty) {
+      await DailyStatsService.recordQuestOutcome(
+          completed.length / quest.objectives.length);
+    }
   }
 }
 

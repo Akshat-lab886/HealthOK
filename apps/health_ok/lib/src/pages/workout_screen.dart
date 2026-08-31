@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_ok/src/services/quest_service.dart';
+import 'package:health_ok/src/services/body_service.dart';
 import 'package:health_ok/src/services/workout_service.dart';
 import 'package:health_ok/src/theme/app_colors.dart';
 import 'package:quest_engine/quest_engine.dart';
@@ -289,6 +290,15 @@ class _AddWorkoutSheetState extends State<_AddWorkoutSheet> {
   int _duration = 30;
   int _intensity = 3;
   final _notes = TextEditingController();
+  double _weightKg = 70; // replaced by the user's real weight in initState
+
+  @override
+  void initState() {
+    super.initState();
+    BodyService.effectiveWeightKg().then((w) {
+      if (mounted) setState(() => _weightKg = w);
+    });
+  }
 
   @override
   void dispose() {
@@ -296,7 +306,13 @@ class _AddWorkoutSheetState extends State<_AddWorkoutSheet> {
     super.dispose();
   }
 
-  int get _calories => _type.kcalPerMinute * _duration * _intensity ~/ 3;
+  /// MET-based estimate scaled to the user's real body weight.
+  int get _calories => estimateWorkoutCalories(
+        type: _type,
+        durationMinutes: _duration,
+        intensity: _intensity,
+        weightKg: _weightKg,
+      );
 
   @override
   Widget build(BuildContext context) {

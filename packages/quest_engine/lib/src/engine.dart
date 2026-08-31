@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 import 'player.dart';
 import 'quest.dart';
@@ -31,13 +30,6 @@ class _Anchor {
   final double perLevel;
   final double cap;
 }
-
-/// Health-data-driven anchors — these connect to real device sensors.
-const _healthAnchors = <_Anchor>[
-  _Anchor('Steps', 'steps', 3000, 500, 20000),
-  _Anchor('Distance', 'km', 1.5, 0.25, 10),
-  _Anchor('Active Calories', 'kcal', 100, 30, 800),
-];
 
 /// Manual/exercise anchors — user must tap to complete.
 const _exerciseAnchors = <_Anchor>[
@@ -82,34 +74,88 @@ class QuestEngine {
   /// Generates today's daily quest with both health-data and exercise objectives.
   ///
   /// Difficulty adapts to the player:
-  ///  - Level scales targets linearly (WHO-anchored floors/caps).
-  ///  - Streak adds up to +25% target pressure (consistency tax — the System
-  ///    expects more from hunters who never miss a day).
-  ///  - Exercise anchors rotate daily so training varies instead of always
-  ///    being push-ups / sit-ups / squats.
-  /// [hydrationGoalMl] plugs the user's own water goal in as a tracked quest.
-  QuestSet generateDaily(Player p, {DateTime? now, int? hydrationGoalMl}) {
+  /// Generates today's daily quest.
+  ///
+  /// Difficulty adapts on TWO axes:
+  ///  - Long-term: level scales the WHO-anchored floor; streak adds up to
+  ///    +25% pressure (the System expects more from consistent hunters).
+  ///  - Short-term/PERSONAL: [recentAvgSteps], [recentAvgKcal] and
+  ///    [questCompletionRate] bend targets toward what this hunter actually
+  ///    does. Someone averaging 9k steps gets a 9.5k-class target, not a
+  ///    generic 3k; someone completing under 50% of objectives gets eased
+  ///    ~15% so quests stay motivating instead of demoralizing.
+  /// Exercise anchors rotate daily; [hydrationGoalMl] plugs the user's own
+  /// water goal in as a tracked objective.
+  QuestSet generateDaily(
+    Player p, {
+    DateTime? now,
+    int? hydrationGoalMl,
+    double? recentAvgSteps,
+    double? recentAvgKcal,
+    double questCompletionRate = 0.5,
+  }) {
     final t = now ?? DateTime.now();
     final expires = DateTime(t.year, t.month, t.day + 1); // midnight
 
     // Streak pressure: +1% per streak day, capped at +25%.
     final streakMult = 1.0 + (p.streakDays.clamp(0, 25)) / 100.0;
 
+    // Achievement pressure: >80% recent completion pushes +10%,
+    // <50% eases -15% (targets stay in the achievable-but-stretching band).
+    final rate = questCompletionRate.clamp(0.0, 1.0);
+    final adaptMult = rate > 0.8 ? 1.10 : (rate < 0.5 ? 0.85 : 1.0);
+
     final objectives = <Objective>[];
 
-    // Health-data objectives (auto-tracked), scaled by level × streak
-    for (final a in _healthAnchors) {
-      final base = a.floor + a.perLevel * (p.level - 1);
-      final target = _clamp(base * streakMult, a.floor, a.cap);
-      objectives.add(Objective(
-        code: a.label.toLowerCase().replaceAll(RegExp(r'[^a-z]'), ''),
-        label: a.label,
-        target: target,
-        unit: a.unit,
-        stat: _statFor(a.label),
-        isAuto: true,
-      ));
+    // Steps: blend the level target with the personal 7-day average —
+    // the personal average wins when it is meaningfully higher.
+    final levelSteps = _clamp(3000.0 + 500 * (p.level - 1), 3000, 20000);
+    double stepsTarget;
+    if (recentAvgSteps != null && recentAvgSteps >= 1000) {
+      final personal = recentAvgSteps * 1.05; // +5% stretch over your average
+      stepsTarget = (personal > levelSteps ? personal : levelSteps) *
+          streakMult *
+          adaptMult;
+    } else {
+      stepsTarget = levelSteps * streakMult * adaptMult;
     }
+    objectives.add(Objective(
+      code: 'steps',
+      label: 'Steps',
+      target: _roundTo(stepsTarget.clamp(2000.0, 25000.0), 100),
+      unit: 'steps',
+      stat: Stat.agility,
+      isAuto: true,
+    ));
+
+    // Active calories: personal 7-day average when known.
+    final levelKcal = _clamp(100.0 + 30 * (p.level - 1), 100, 800);
+    double kcalTarget;
+    if (recentAvgKcal != null && recentAvgKcal >= 50) {
+      kcalTarget = recentAvgKcal * 1.05 * adaptMult;
+    } else {
+      kcalTarget = levelKcal * streakMult * adaptMult;
+    }
+    objectives.add(Objective(
+      code: 'activecalories',
+      label: 'Active Calories',
+      target: _roundTo(kcalTarget.clamp(80.0, 1200.0), 10),
+      unit: 'kcal',
+      stat: Stat.vitality,
+      isAuto: true,
+    ));
+
+    // Distance: derived from the steps target via a ~0.72 m stride so steps
+    // and distance stay mutually consistent.
+    objectives.add(Objective(
+      code: 'distance',
+      label: 'Distance',
+      target:
+          (stepsTarget.clamp(2000.0, 25000.0) * 0.00072).clamp(1.0, 20.0),
+      unit: 'km',
+      stat: Stat.agility,
+      isAuto: true,
+    ));
 
     // Hydration objective (auto-tracked from local water log)
     final waterTarget =
@@ -123,17 +169,18 @@ class QuestEngine {
       isAuto: true,
     ));
 
-    // Exercise objectives (manual tap) — rotate 2 of 3 daily for variety
+    // Exercise objectives (manual tap) — rotate 2 of 3 daily for variety,
+    // scaled by streak + achievement pressure.
     final daySeed = t.year * 366 + t.month * 31 + t.day;
     final rotated = [..._exerciseAnchors]
       ..shuffle(Random(daySeed));
     for (final a in rotated.take(2)) {
       final base = a.floor + a.perLevel * (p.level - 1);
-      final target = _clamp(base * streakMult, a.floor, a.cap);
+      final target = base * streakMult * adaptMult;
       objectives.add(Objective(
         code: a.label.toLowerCase().replaceAll(RegExp(r'[^a-z]'), ''),
         label: a.label,
-        target: target,
+        target: target.roundToDouble().clamp(a.floor, a.cap),
         unit: a.unit,
         stat: _statFor(a.label),
         isAuto: false,
@@ -147,6 +194,10 @@ class QuestEngine {
       expiresAt: expires,
     );
   }
+
+  /// Round [v] to the nearest [step] (e.g. step=100 → 3200, not 3247.13).
+  double _roundTo(double v, int step) =>
+      (v / step).roundToDouble() * step;
 
   /// Checks which auto objectives are met given today's health data.
   /// Returns a list of objective indices that should be auto-completed.
