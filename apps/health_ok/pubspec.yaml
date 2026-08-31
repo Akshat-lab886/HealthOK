@@ -13,6 +13,26 @@ dependencies:
   # Verified profile: carp.dk, MIT, v13.x line — see docs/06-health-platform-sync.md §4.
   health: ^13.0.0
   cupertino_icons: ^1.0.8
+  core_domain:
+    path: ../../packages/core_domain
+  storage:
+    path: ../../packages/storage
+  quest_engine:
+    path: ../../packages/quest_engine
+  drift: ^2.24.0
+  drift_flutter: ^0.2.0
+  path_provider: ^2.1.0
+  path: ^1.9.0
+  sqlite3_flutter_libs: ^0.5.0
+  crypto: ^3.0.7
+  shared_preferences: ^2.3.0
+  llamadart: ^0.8.20
+  http: ^1.2.0
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.10.0
+  share_plus: ^10.1.0
+  speech_to_text: ^7.0.0
+  image_picker: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,11 @@
+name: quest_engine
+description: HealthOK "The System" — solo-leveling quest, XP, level and rank engine. Pure Dart.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+dev_dependencies:
+  test: ^1.25.0
+  very_good_analysis: ^6.0.0

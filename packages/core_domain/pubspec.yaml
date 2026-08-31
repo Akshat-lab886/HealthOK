@@ -1,0 +1,14 @@
+name: core_domain
+description: Core domain entities for HealthOK.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  meta: ^1.19.0
+
+dev_dependencies:
+  test: ^1.25.0
+  very_good_analysis: ^6.0.0

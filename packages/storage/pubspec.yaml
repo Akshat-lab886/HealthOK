@@ -1,0 +1,23 @@
+name: storage
+description: Local SQLite + Drift storage for HealthOK.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  core_domain:
+    path: ../core_domain
+  drift: ^2.24.0
+  drift_flutter: ^0.2.0
+  path_provider: ^2.1.0
+  path: ^1.9.0
+  sqlite3_flutter_libs: ^0.5.0
+  crypto: ^3.0.7
+
+dev_dependencies:
+  drift_dev: ^2.24.0
+  build_runner: ^2.4.0
+  test: ^1.25.0
+  very_good_analysis: ^6.0.0
