@@ -169,6 +169,15 @@ class ModelManager extends ChangeNotifier {
       final request = await client.getUrl(Uri.parse(model.huggingFaceUrl));
       final response = await request.close();
 
+      // Guard against error bodies saved as models (e.g. 15-byte 404 HTML):
+      // a real GGUF is hundreds of MB and must come back HTTP 200.
+      if (response.statusCode != 200) {
+        await response.drain<void>();
+        client.close();
+        throw Exception(
+            'Download failed: HTTP ${response.statusCode} from ${model.huggingFaceUrl}');
+      }
+
       final totalBytes =
           response.contentLength ?? model.estimatedSizeMb * 1024 * 1024;
       int receivedBytes = 0;
@@ -182,6 +191,12 @@ class ModelManager extends ChangeNotifier {
       }
       await sink.close();
       client.close();
+
+      // Post-download sanity check: reject tiny/corrupt files
+      if (file.lengthSync() < 1024 * 1024) {
+        file.deleteSync();
+        throw Exception('Downloaded file is too small to be a model — discarded');
+      }
 
       _downloadProgress.remove(model.id);
       _downloaded[model.id] = true;

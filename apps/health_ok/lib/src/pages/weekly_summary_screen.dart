@@ -80,14 +80,10 @@ class _WeeklySummaryScreenState extends State<WeeklySummaryScreen> {
       _error = null;
     });
     try {
-      // Ensure model is loaded
-      if (!widget.coachService.isLoaded) {
-        // Try to load the active model
-        // (caller should ensure model is loaded before opening this screen)
-        throw StateError('AI model not loaded. Open the Coach screen first.');
-      }
-      widget.coachService.clearHistory();
-      final result = await widget.coachService.generateWeeklySummary(_weekData!);
+      // History-free: works with ANY engine (TinyLlama, Gemini or the
+      // procedural fallback). No model-required hard failure, no chat wipe.
+      final result =
+          await widget.coachService.generateWeeklySummary(_weekData!);
       if (!mounted) return;
       setState(() {
         _summary = result;

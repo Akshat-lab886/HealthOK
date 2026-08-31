@@ -339,20 +339,36 @@ class CharacterScreenState extends State<CharacterScreen> {
   /// Apply selected AI suggestions as new quest objectives.
   Future<void> _applyAiSuggestions(List<String> suggestions) async {
     if (suggestions.isEmpty) return;
-    // Create a new quest set with the AI-suggested objectives
+    // Room for at most 6 objectives total — add only what fits and report
+    // the real number (previously it silently dropped them all).
+    const maxObjectives = 6;
+    final room = (maxObjectives - _dailyQuest.objectives.length)
+        .clamp(0, suggestions.length);
+    if (room == 0) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+              'Quest board is full (6/6). Complete or wait for tomorrow\'s quest.'),
+          backgroundColor: AppColors.energyColor,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      );
+      return;
+    }
+    final stamp = DateTime.now().millisecondsSinceEpoch;
     final newObjectives = [
       ..._dailyQuest.objectives,
-      ...suggestions.map((s) => Objective(
-        code: 'ai_${DateTime.now().millisecondsSinceEpoch}',
-        label: s,
-        target: 1,
-        unit: 'rep',
-        isAuto: false,
-      )),
+      ...suggestions.take(room).toList().asMap().entries.map((e) => Objective(
+            code: 'ai_${stamp}_${e.key}',
+            label: e.value,
+            target: 1,
+            unit: 'rep',
+            isAuto: false,
+          )),
     ];
-    if (newObjectives.length > 6) {
-      newObjectives.removeRange(6, newObjectives.length);
-    }
     final updated = _dailyQuest.copyWith(objectives: newObjectives);
     await QuestService.saveQuest(updated);
     if (!mounted) return;
@@ -361,7 +377,7 @@ class CharacterScreenState extends State<CharacterScreen> {
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${suggestions.length} AI quest${suggestions.length == 1 ? "" : "s"} added ✓'),
+        content: Text('$room AI quest${room == 1 ? "" : "s"} added ✓'),
         backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

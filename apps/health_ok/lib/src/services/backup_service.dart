@@ -14,7 +14,9 @@ import 'package:core_domain/core_domain.dart';
 class BackupService {
   static const _version = 2;
 
-  /// All SharedPreferences keys that HealthOK uses
+  /// All SharedPreferences keys that HealthOK uses.
+  /// NOTE: 'gemini_api_key' is deliberately NOT backed up (secret material —
+  /// backup files get shared via the share sheet).
   static const _prefKeys = [
     'hok_player',
     'hok_quest',
@@ -33,6 +35,8 @@ class BackupService {
     'hydration_notifs',
     'streak_notifs',
     'voice_enabled',
+    'briefing_enabled',
+    'gemini_enabled',
     'onboarding_done',
   ];
 
@@ -49,11 +53,13 @@ class BackupService {
     ]) {
       final rows = await appDb.getSamplesForType(type);
       samples.addAll(rows.map((s) => {
+        'id': s.id,
         'type': s.type.name,
         'value': s.value,
         'startAt': s.startAt.millisecondsSinceEpoch,
         'endAt': s.endAt.millisecondsSinceEpoch,
         'source': s.source.id,
+        'createdAt': s.createdAt.millisecondsSinceEpoch,
       }));
     }
 
@@ -150,6 +156,41 @@ class BackupService {
               value.map((e) => e.toString()).toList(),
             );
           }
+        }
+      }
+
+      // Restore health samples (previously exported but never restored!)
+      final sampleData = data['samples'] as List<dynamic>?;
+      if (sampleData != null && sampleData.isNotEmpty) {
+        final appDb = await AppDatabase.open();
+        final restored = <Sample>[];
+        for (final raw in sampleData) {
+          try {
+            final m = raw as Map<String, dynamic>;
+            final typeName = m['type'] as String?;
+            final type = HealthDataType.values
+                .where((t) => t.name == typeName)
+                .firstOrNull;
+            if (type == null) continue;
+            restored.add(Sample(
+              id: (m['id'] as String?) ??
+                  '${m['startAt']}_${type.name}_${m['source']}',
+              type: type,
+              startAt: DateTime.fromMillisecondsSinceEpoch(m['startAt'] as int),
+              endAt: DateTime.fromMillisecondsSinceEpoch(m['endAt'] as int),
+              value: (m['value'] as num?)?.toDouble(),
+              source: (m['source'] == 'health_connect')
+                  ? Source.healthConnect()
+                  : Source.local(),
+              createdAt: DateTime.fromMillisecondsSinceEpoch(
+                  (m['createdAt'] as int?) ?? (m['startAt'] as int)),
+            ));
+          } catch (_) {
+            // Skip malformed rows — restore the rest
+          }
+        }
+        if (restored.isNotEmpty) {
+          await appDb.insertSamples(restored);
         }
       }
 

@@ -95,7 +95,18 @@ TRENDS:
 
 Give your analysis in a friendly but data-driven tone. Use emoji. End with one actionable recommendation.''';
 
-      final response = await widget.coachService.sendAndWait(prompt);
+      // History-free generation: never pollute the coach chat
+      final gen = await widget.coachService.generateStandalone(
+        prompt,
+        systemPrompt:
+            'You are a health data analyst. Analyze weekly data, give 3-5 '
+            'specific insights with numbers, end with one actionable step. '
+            'Friendly, data-driven, use emoji. Max 150 words.',
+        maxTokens: 300,
+      );
+      final response = gen?.text ??
+          _proceduralInsights(thisSteps, thisDist, thisCal, lastSteps,
+              lastDist, lastCal);
       if (!mounted) return;
       setState(() {
         _insight = response;
@@ -108,6 +119,28 @@ Give your analysis in a friendly but data-driven tone. Use emoji. End with one a
         _loading = false;
       });
     }
+  }
+
+  /// Procedural insight fallback — real trend math, no engine needed.
+  static String _proceduralInsights(
+      double thisSteps, double thisDist, double thisCal,
+      double lastSteps, double lastDist, double lastCal) {
+    String pct(double cur, double prev) =>
+        prev > 0 ? '${(((cur - prev) / prev) * 100).toStringAsFixed(1)}%' : 'N/A';
+    final buf = StringBuffer();
+    buf.writeln('📊 This week: ${thisSteps.toStringAsFixed(0)} steps, '
+        '${thisDist.toStringAsFixed(2)} km, ${thisCal.toStringAsFixed(0)} kcal.');
+    buf.writeln('📈 vs last week: steps ${pct(thisSteps, lastSteps)}, '
+        'distance ${pct(thisDist, lastDist)}, '
+        'calories ${pct(thisCal, lastCal)}.');
+    if (lastSteps > 0 && thisSteps < lastSteps) {
+      buf.writeln('💡 Recommendation: activity dipped — add one 15-minute '
+          'walk after your largest meal to recover the trend.');
+    } else {
+      buf.writeln('💡 Recommendation: keep the momentum — lock in your best '
+          'day as a repeating routine.');
+    }
+    return buf.toString();
   }
 
   @override

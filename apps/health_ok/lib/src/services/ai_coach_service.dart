@@ -226,17 +226,23 @@ class AiCoachService extends ChangeNotifier {
             : _history
         : _history;
 
+    // Send the ENRICHED last message (with health data appended) — the raw
+    // user text is already in _history for persistence.
     final messages = <LlamaChatMessage>[
       LlamaChatMessage.fromText(
         role: LlamaChatRole.system,
         text: sysPrompt,
       ),
-      ...historySlice.map((m) => LlamaChatMessage.fromText(
-            role: m['role'] == 'assistant'
-                ? LlamaChatRole.assistant
-                : LlamaChatRole.user,
-            text: m['content']!,
-          )),
+      ...historySlice.map((m) {
+        final isLastUser =
+            m == _history.last && m['role'] == 'user';
+        return LlamaChatMessage.fromText(
+          role: m['role'] == 'assistant'
+              ? LlamaChatRole.assistant
+              : LlamaChatRole.user,
+          text: isLastUser ? enrichedMessage : m['content']!,
+        );
+      }),
     ];
 
     // Micro tier: shorter responses
@@ -435,35 +441,87 @@ class AiCoachService extends ChangeNotifier {
   }
 
   /// Generate weekly summary (for weekly summary screen).
+  /// History-free: does NOT pollute the coach chat. Falls back to a
+  /// procedural summary when no generative engine is available.
+  /// Accepts both key spellings ('steps'/'stepsTotal', etc.).
   Future<String> generateWeeklySummary(Map<String, dynamic> weekData) async {
+    final steps = (weekData['steps'] ?? weekData['stepsTotal']) ?? 0;
+    final distance = weekData['distance'] ?? weekData['distanceTotal'] ?? '0';
+    final calories =
+        (weekData['calories'] ?? weekData['caloriesTotal']) ?? 0;
+    final days = (weekData['days'] ??
+            ((weekData['avgSteps'] != null && weekData['avgSteps'] != 0 &&
+                    steps != 0)
+                ? (steps / weekData['avgSteps']).round()
+                : 0)) ??
+        0;
+
     final prompt = '''Analyze this weekly health data and give a brief summary:
 
-Steps: ${weekData['steps']}
-Distance: ${weekData['distance']}
-Calories burned: ${weekData['calories']}
-Days with data: ${weekData['days']}
+Steps: $steps
+Distance: $distance
+Calories burned: $calories
+Days with data: $days
 
 Give 2-3 bullet points highlighting trends and one recommendation.''';
 
-    return sendAndWait(prompt);
+    final result = await generateStandalone(prompt, maxTokens: 220);
+    if (result != null) return result.text;
+
+    // Procedural fallback — real numbers, no engine needed
+    final stepsInt = (steps as num?)?.toInt() ?? 0;
+    final kcal = (calories as num?)?.toInt() ?? 0;
+    final daysInt = (days as num?)?.toInt() ?? 0;
+    final avg = daysInt > 0 ? stepsInt ~/ daysInt : 0;
+    final buf = StringBuffer();
+    buf.writeln('• Weekly volume: $steps steps across $days synced days '
+        '(~$avg/day).');
+    buf.writeln('• Energy output: $kcal active kcal burned this week.');
+    buf.writeln(avg >= 7000
+        ? '• Trend: strong consistency — keep the daily average above 7k.'
+        : '• Recommendation: add one 20-minute walk per day to lift the '
+          'weekly average above 7k steps.');
+    return buf.toString();
   }
 
   /// Suggest daily quests based on recent data.
+  /// History-free; falls back to data-driven procedural suggestions.
   Future<List<String>> suggestDailyQuests(Map<String, dynamic> recentData) async {
+    final workouts = (recentData['workoutsThisWeek'] as num?)?.toInt() ?? 0;
     final prompt = '''Suggest 3 simple daily quests for a health tracker user:
-- Average steps: ${recentData['avgSteps']}
 - Streak: ${recentData['streak']} days
 - Level: ${recentData['level']}
+- Workouts logged this week: $workouts
 
 Return 3 short quest labels (like "Walk 8000 steps", "Drink 2L water", "Stretch for 10 min").''';
 
-    final response = await sendAndWait(prompt);
-    return response
-        .split('\n')
-        .where((l) => l.trim().isNotEmpty && l.contains('"'))
-        .map((l) => l.replaceAll(RegExp(r'^\d+\.\s*'), '').replaceAll('"', '').trim())
-        .where((s) => s.isNotEmpty)
-        .take(3)
-        .toList();
+    final result = await generateStandalone(prompt, maxTokens: 120);
+    if (result != null) {
+      // Accept both quoted and plain numbered/bulleted lines
+      final parsed = result.text
+          .split('\n')
+          .map((l) => l
+              .replaceFirst(RegExp(r'^\s*(?:\d+[\.\)]|[-•*])\s*'), '')
+              .replaceAll('"', '')
+              .trim())
+          .where((s) => s.isNotEmpty && s.length < 60)
+          .take(3)
+          .toList();
+      if (parsed.isNotEmpty) return parsed;
+    }
+
+    // Procedural fallback — scale targets to the hunter
+    final level = (recentData['level'] as num?)?.toInt() ?? 1;
+    final streak = (recentData['streak'] as num?)?.toInt() ?? 0;
+    final stepTarget = 3000 + 500 * (level - 1);
+    final waterTarget = 2000;
+    final pushTarget = 10 + 2 * (level - 1);
+    return [
+      'Walk ${stepTarget.clamp(3000, 20000)} steps',
+      'Drink ${(waterTarget ~/ 100) * 100} ml of water',
+      streak >= 3
+          ? 'Keep the $streak-day streak alive'
+          : 'Do $pushTarget push-ups',
+    ];
   }
 }

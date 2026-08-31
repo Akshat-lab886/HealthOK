@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_ok/main.dart' show AppColors;
 import 'package:health_ok/src/services/ai_coach_service.dart';
 import 'package:health_ok/src/services/quest_service.dart';
+import 'package:health_ok/src/services/workout_service.dart';
 import 'package:quest_engine/quest_engine.dart';
 
 /// A bottom-sheet style card that uses the AI to suggest 3 new quest objectives.
@@ -41,16 +42,14 @@ class _AiQuestSuggestionSheetState extends State<AiQuestSuggestionSheet> {
       _selected.clear();
     });
     try {
-      final now = DateTime.now();
       final state = await QuestService.loadAll();
+      final week = await WorkoutService.getLast7Days();
       final recentData = {
-        'avgSteps': 5000,
-        'avgDistance': 2.0,
         'streak': state.player.streakDays,
         'level': state.player.level,
-        'totalQuests': 0,
+        'workoutsThisWeek': week.length,
       };
-      widget.coachService.clearHistory();
+      // NOTE: no clearHistory() — this sheet must not wipe the user's chat
       final suggestions = await widget.coachService.suggestDailyQuests(recentData);
       if (!mounted) return;
       setState(() {
